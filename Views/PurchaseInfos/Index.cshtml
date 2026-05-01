@@ -1,0 +1,36 @@
+@model IEnumerable<PerryHomesTracker.Models.PurchaseInfo>
+@{
+    ViewData["Title"] = "Purchase info";
+}
+
+<h1>Purchase info</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Home</th>
+            <th>Contract date</th>
+            <th>Closing date</th>
+            <th>Purchase price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.Home?.AddressLine1, @item.Home?.City</td>
+            <td>@Html.DisplayFor(modelItem => item.ContractDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.ClosingDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.PurchasePrice)</td>
+            <td class="text-nowrap">
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

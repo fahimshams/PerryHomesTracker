@@ -1,0 +1,49 @@
+@model PerryHomesTracker.Models.PurchaseInfo
+@{
+    ViewData["Title"] = "Create purchase info";
+}
+
+<h1>Create</h1>
+
+<h4>PurchaseInfo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="HomeId" class="form-label"></label>
+                <select asp-for="HomeId" class="form-select" asp-items="ViewBag.HomeId"></select>
+                <span asp-validation-for="HomeId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ContractDate" class="form-label"></label>
+                <input asp-for="ContractDate" class="form-control" type="date" />
+                <span asp-validation-for="ContractDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ClosingDate" class="form-label"></label>
+                <input asp-for="ClosingDate" class="form-control" type="date" />
+                <span asp-validation-for="ClosingDate" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PurchasePrice" class="form-label"></label>
+                <input asp-for="PurchasePrice" class="form-control" />
+                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label"></label>
+                <textarea asp-for="Notes" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

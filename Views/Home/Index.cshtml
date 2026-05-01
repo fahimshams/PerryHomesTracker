@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center mb-4">
+    <h1 class="display-5">Perry Homes Tracker</h1>
+    <p class="lead text-muted">Manage homes, build stages, contacts, and purchase details.</p>
+</div>
+
+<div class="row g-3 justify-content-center">
+    <div class="col-md-5">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Homes</h5>
+                <p class="card-text text-muted">Addresses, communities, current stage, and primary contact.</p>
+                <a class="btn btn-primary" asp-controller="Homes" asp-action="Index">Open</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Stages</h5>
+                <p class="card-text text-muted">Construction or pipeline stages for each home.</p>
+                <a class="btn btn-primary" asp-controller="Stages" asp-action="Index">Open</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">People</h5>
+                <p class="card-text text-muted">Contacts and roles linked to homes.</p>
+                <a class="btn btn-primary" asp-controller="People" asp-action="Index">Open</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Purchase info</h5>
+                <p class="card-text text-muted">Contract, closing, and price (one record per home).</p>
+                <a class="btn btn-primary" asp-controller="PurchaseInfos" asp-action="Index">Open</a>
+            </div>
+        </div>
+    </div>
+</div>

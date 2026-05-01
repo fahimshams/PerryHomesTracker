@@ -1,0 +1,26 @@
+@model PerryHomesTracker.Models.PurchaseInfo
+@{
+    ViewData["Title"] = "Purchase details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Home)</dt>
+        <dd class="col-sm-10">@Model.Home?.FullAddress</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ContractDate)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ContractDate)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ClosingDate)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.ClosingDate)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.PurchasePrice)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.PurchasePrice)</dd>
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Notes)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Notes)</dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>

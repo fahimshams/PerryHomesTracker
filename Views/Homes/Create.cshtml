@@ -1,0 +1,73 @@
+@model PerryHomesTracker.Models.Home
+@{
+    ViewData["Title"] = "Create home";
+}
+
+<h1>Create</h1>
+
+<h4>Home</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label asp-for="AddressLine1" class="form-label"></label>
+                <input asp-for="AddressLine1" class="form-control" />
+                <span asp-validation-for="AddressLine1" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="AddressLine2" class="form-label"></label>
+                <input asp-for="AddressLine2" class="form-control" />
+                <span asp-validation-for="AddressLine2" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="State" class="form-label"></label>
+                    <input asp-for="State" class="form-control" maxlength="2" />
+                    <span asp-validation-for="State" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Zip" class="form-label"></label>
+                    <input asp-for="Zip" class="form-control" />
+                    <span asp-validation-for="Zip" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CommunityName" class="form-label"></label>
+                <input asp-for="CommunityName" class="form-control" />
+                <span asp-validation-for="CommunityName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PlanName" class="form-label"></label>
+                <input asp-for="PlanName" class="form-control" />
+                <span asp-validation-for="PlanName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="StageId" class="form-label"></label>
+                <select asp-for="StageId" class="form-select" asp-items="ViewBag.StageId"></select>
+                <span asp-validation-for="StageId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PrimaryContactId" class="form-label"></label>
+                <select asp-for="PrimaryContactId" class="form-select" asp-items="ViewBag.PrimaryContactId">
+                    <option value="">— None —</option>
+                </select>
+                <span asp-validation-for="PrimaryContactId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
