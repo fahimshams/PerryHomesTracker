@@ -1,0 +1,16 @@
+---
+description: Perry HomesTracker — dev standards
+alwaysApply: true
+---
+
+- **Stack**
+  - .NET 8 — runtime and SDK target
+  - ASP.NET Core MVC — web app, controllers, Razor views, routing
+  - Entity Framework Core — ORM, DbContext, migrations
+  - SQL Server — database (connection string; LocalDB in dev counts as SQL Server)
+
+- **Controllers:** Async EF (`*Async` + `SaveChangesAsync`). POST: `[ValidateAntiForgeryToken]` + `[Bind(...)]` allow-list only. Details/Edit/Delete: null or missing entity → `NotFound()`.
+
+- **Models:** `[Required]`, `[MaxLength]`, `[Display]` (etc.) on entities for validation and labels; configure relations and deletes in `PerryHomesDbContext`, not ad hoc in controllers.
+
+- **Views:** Set `ViewData["Title"]`. Forms: tag helpers + Bootstrap; `asp-validation-summary` `ModelOnly` + `asp-validation-for` per field; Create/Edit: `@section Scripts` with `_ValidationScriptsPartial`.
