@@ -14,3 +14,20 @@ alwaysApply: true
   1. **Happy path** — Valid input for a representative action: assert the exact success outcome (status or result type, and redirect target / view name / response payload or verified side effect such as entity saved).
   2. **Missing dependency** — Required related data absent or invalid (e.g. home without a stage): assert the exact failure outcome (e.g. `400`, `404`, `ViewResult` with model error, or validation failure — name the status or result type and what the client sees).
   3. **Conflict** — Business rule blocks the operation (e.g. delete a stage that still has homes): assert the exact failure outcome (e.g. `400`, `409`, error response, or redirect with error — again, concrete status/result and behavior).
+
+  ## Test Types
+
+### Unit
+- **Folder:** `Tests/Unit/`
+- **Dependencies:** Microsoft.NET.Test.Sdk, xunit (+ runner); optional Moq or NSubstitute; project reference to the app (or to the specific class libraries under test). No WebApplicationFactory, no real database, no listening server.
+- **Scope:** One unit of behavior in isolation (e.g. a service, helper, or controller with mocked DbContext/repositories). Asserts logic and branching only; no real I/O. Fast, deterministic, runs anywhere.
+
+### Integration  
+- **Folder:** `Tests/Integration/`
+- **Dependencies:** Microsoft.AspNetCore.Mvc.Testing (WebApplicationFactory), EF Core provider aligned with how you validate persistence (SQL Server test DB, Testcontainers, or SQLite for schema/migration checks—not only InMemory if you care about SQL semantics); project reference to the web app; connection string / container lifecycle in test setup.
+- **Scope:** Real composition: HTTP pipeline (routing, model binding, filters, antiforgery where you enable it), real DI, real database (or TestServer + DB). Tests multiple layers together; slower than unit; catches wiring and SQL issues.
+
+### Smoke
+- **Folder:** `Tests/Smoke/`
+- **Dependencies:** HttpClient against a base URL (staging/prod or CI-deployed app); optional Playwright/Selenium if you mean browser smoke; often a separate job after deploy with secrets for URL/credentials only.
+- **Scope:** Thin, high-value checks that the deployed app is “alive”: e.g. GET / returns 200, health endpoint, one critical user journey. Few tests; not for exhaustive coverage.
