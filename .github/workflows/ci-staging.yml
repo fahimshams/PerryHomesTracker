@@ -10,7 +10,7 @@ env:
   TEST_PROJECT: Tests/PerryHomesTracker.Tests/PerryHomesTracker.Tests.csproj
   WEB_PROJECT: PerryHomesTracker.csproj
   AZURE_WEBAPP_NAME: perry-homes-tracker
-  DEFAULT_SMOKE_URL: https://perry-homes-tracker.azurewebsites.net
+  # DEFAULT_SMOKE_URL: {{ vars.AZURE_WEBAPP_URL }}
 
 jobs:
   build-and-test:
