@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "E:\\PerryHomesTracker\\PerryHomesTracker.csproj": {}
+    "C:\\Users\\fahim\\Documents\\Perry Home Interview Prep\\PerryHomesTracker\\PerryHomesTracker.csproj": {}
   },
   "projects": {
-    "E:\\PerryHomesTracker\\PerryHomesTracker.csproj": {
+    "C:\\Users\\fahim\\Documents\\Perry Home Interview Prep\\PerryHomesTracker\\PerryHomesTracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\PerryHomesTracker\\PerryHomesTracker.csproj",
+        "projectUniqueName": "C:\\Users\\fahim\\Documents\\Perry Home Interview Prep\\PerryHomesTracker\\PerryHomesTracker.csproj",
         "projectName": "PerryHomesTracker",
-        "projectPath": "E:\\PerryHomesTracker\\PerryHomesTracker.csproj",
-        "packagesPath": "C:\\Users\\shams.TSCT\\.nuget\\packages\\",
-        "outputPath": "E:\\PerryHomesTracker\\obj\\",
+        "projectPath": "C:\\Users\\fahim\\Documents\\Perry Home Interview Prep\\PerryHomesTracker\\PerryHomesTracker.csproj",
+        "packagesPath": "C:\\Users\\fahim\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\fahim\\Documents\\Perry Home Interview Prep\\PerryHomesTracker\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\shams.TSCT\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\fahim\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -75,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.420/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

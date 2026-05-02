@@ -1,0 +1,16 @@
+---
+description: Perry HomesTracker — automated test conventions
+alwaysApply: true
+---
+
+- **Test method naming:** Underscore-separated segments, e.g. `Create_Home_WithoutStage_Returns400`.
+- **Pattern:** `Method_ControllerName_[Scenario]_ExpectedResult`, where:
+  - **ControllerName** — short name without the `Controller` suffix (e.g. `Home` for `HomeController`).
+  - **Method** — the action under test (e.g. `Create`, `Delete`).
+  - **Scenario** — optional; use when multiple cases exist for the same action.
+  - **ExpectedResult** — concrete, assertable outcome only: HTTP status code, MVC result type (`ViewResult`, `RedirectToActionResult`, `NotFoundResult`, `BadRequestResult`, etc.), redirect action/controller (if applicable), view name, and any critical model or persistence fact. Do not use vague summaries (e.g. “success”, “works”, “as expected”) without tying them to those specifics.
+
+- **Minimum coverage for every new controller** (in addition to any action-specific tests you add):
+  1. **Happy path** — Valid input for a representative action: assert the exact success outcome (status or result type, and redirect target / view name / response payload or verified side effect such as entity saved).
+  2. **Missing dependency** — Required related data absent or invalid (e.g. home without a stage): assert the exact failure outcome (e.g. `400`, `404`, `ViewResult` with model error, or validation failure — name the status or result type and what the client sees).
+  3. **Conflict** — Business rule blocks the operation (e.g. delete a stage that still has homes): assert the exact failure outcome (e.g. `400`, `409`, error response, or redirect with error — again, concrete status/result and behavior).

@@ -1,0 +1,47 @@
+# Build outputs
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Packages
+packages/
+
+# Node (if frontend exists)
+node_modules/
+
+# Test results
+TestResults/
+
+# Coverage
+coverage/
+*.coverage
+
+# IDE settings
+.vs/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Large data / dumps
+*.sql
+*.bak
+*.zip
+*.csv
