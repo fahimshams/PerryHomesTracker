@@ -1,6 +1,8 @@
-## Build results
+## Build results (any project in the repo)
 [Bb]in/
 [Oo]bj/
+**/bin/
+**/obj/
 [Ll]og/
 [Ll]ogs/
 
