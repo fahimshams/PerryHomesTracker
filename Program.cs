@@ -3,8 +3,19 @@ using PerryHomesTracker.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var testingDbName = builder.Environment.IsEnvironment("Testing")
+    ? $"PerryHomesTests_{Guid.NewGuid():N}"
+    : null;
+
 builder.Services.AddDbContext<PerryHomesDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+{
+    if (testingDbName != null)
+        options.UseInMemoryDatabase(testingDbName);
+    else
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddScoped<IPerryHomesDbContext>(sp => sp.GetRequiredService<PerryHomesDbContext>());
 
 builder.Services.AddControllersWithViews();
 

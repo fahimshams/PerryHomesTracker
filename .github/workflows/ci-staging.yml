@@ -1,12 +1,19 @@
-name: CI
+name: CI Staging
 
 on:
   push:
     branches:
       - staging
 
+env:
+  DOTNET_VERSION: "8.0.x"
+  TEST_PROJECT: Tests/PerryHomesTracker.Tests/PerryHomesTracker.Tests.csproj
+  WEB_PROJECT: PerryHomesTracker.csproj
+  AZURE_WEBAPP_NAME: perry-homes-tracker
+  DEFAULT_SMOKE_URL: https://perry-homes-tracker.azurewebsites.net
+
 jobs:
-  build-and-test:
+  build-test-deploy-smoke:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -15,7 +22,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "8.0.x"
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore
         run: dotnet restore PerryHomesTracker.sln
@@ -23,5 +30,43 @@ jobs:
       - name: Build
         run: dotnet build PerryHomesTracker.sln --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test PerryHomesTracker.sln --configuration Release --no-build --verbosity normal
+      - name: Unit tests (Tests/Unit/)
+        run: >
+          dotnet test ${{ env.TEST_PROJECT }}
+          --configuration Release
+          --no-build
+          --verbosity normal
+          --filter "FullyQualifiedName~PerryHomesTracker.Tests.Unit"
+
+      - name: Integration tests (Tests/Integration/)
+        run: >
+          dotnet test ${{ env.TEST_PROJECT }}
+          --configuration Release
+          --no-build
+          --verbosity normal
+          --filter "FullyQualifiedName~PerryHomesTracker.Tests.Integration"
+
+      - name: Publish web app
+        run: >
+          dotnet publish ${{ env.WEB_PROJECT }}
+          --configuration Release
+          --no-build
+          --output ./publish
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
+
+      - name: Smoke tests (Tests/Smoke/) against deployed site
+        run: |
+          SMOKE_URL="${{ vars.AZURE_WEBAPP_URL }}"
+          if [ -z "$SMOKE_URL" ]; then SMOKE_URL="${{ env.DEFAULT_SMOKE_URL }}"; fi
+          export SMOKE_TEST_BASE_URL="$SMOKE_URL"
+          dotnet test ${{ env.TEST_PROJECT }} \
+            --configuration Release \
+            --no-build \
+            --verbosity normal \
+            --filter "FullyQualifiedName~PerryHomesTracker.Tests.Smoke"

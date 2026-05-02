@@ -3,7 +3,7 @@ using PerryHomesTracker.Models;
 
 namespace PerryHomesTracker.Data;
 
-public class PerryHomesDbContext : DbContext
+public class PerryHomesDbContext : DbContext, IPerryHomesDbContext
 {
     public PerryHomesDbContext(DbContextOptions<PerryHomesDbContext> options)
         : base(options)

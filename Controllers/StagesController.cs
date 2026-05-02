@@ -7,9 +7,9 @@ namespace PerryHomesTracker.Controllers;
 
 public class StagesController : Controller
 {
-    private readonly PerryHomesDbContext _context;
+    private readonly IPerryHomesDbContext _context;
 
-    public StagesController(PerryHomesDbContext context)
+    public StagesController(IPerryHomesDbContext context)
     {
         _context = context;
     }
