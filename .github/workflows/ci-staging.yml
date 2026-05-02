@@ -13,7 +13,7 @@ env:
   DEFAULT_SMOKE_URL: https://perry-homes-tracker.azurewebsites.net
 
 jobs:
-  build-test-deploy-smoke:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
