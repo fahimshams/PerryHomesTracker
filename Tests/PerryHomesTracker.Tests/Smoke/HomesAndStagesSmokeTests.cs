@@ -1,8 +1,13 @@
 using System.Net;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace PerryHomesTracker.Tests.Smoke;
 
+/// <summary>
+/// HTTP checks only: base URL from <c>appsettings.Smoke.json</c> or <c>SMOKE_TEST_BASE_URL</c>.
+/// EF/SQL (<c>ConnectionStrings:DefaultConnection</c>) is configured on the deployment being called, not here.
+/// </summary>
 public class HomesAndStagesSmokeTests
 {
     private static string? ResolveBaseUrl()
@@ -24,13 +29,22 @@ public class HomesAndStagesSmokeTests
         return string.IsNullOrWhiteSpace(fromFile) ? null : fromFile.TrimEnd('/');
     }
 
+    private static HttpClient CreateSmokeClient(string baseUrl)
+    {
+        var handler = new HttpClientHandler { AllowAutoRedirect = true };
+        return new HttpClient(handler, disposeHandler: true)
+        {
+            BaseAddress = new Uri(baseUrl + "/")
+        };
+    }
+
     [SkippableFact]
     public async Task Get_Homes_Index_Returns200()
     {
         var baseUrl = ResolveBaseUrl();
         Skip.If(string.IsNullOrEmpty(baseUrl), "Set Smoke:BaseUrl in appsettings.Smoke.json or SMOKE_TEST_BASE_URL.");
 
-        using var client = new HttpClient { BaseAddress = new Uri(baseUrl + "/") };
+        using var client = CreateSmokeClient(baseUrl);
         var response = await client.GetAsync("Homes");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -42,7 +56,7 @@ public class HomesAndStagesSmokeTests
         var baseUrl = ResolveBaseUrl();
         Skip.If(string.IsNullOrEmpty(baseUrl), "Set Smoke:BaseUrl in appsettings.Smoke.json or SMOKE_TEST_BASE_URL.");
 
-        using var client = new HttpClient { BaseAddress = new Uri(baseUrl + "/") };
+        using var client = CreateSmokeClient(baseUrl);
         var response = await client.GetAsync("Stages");
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
