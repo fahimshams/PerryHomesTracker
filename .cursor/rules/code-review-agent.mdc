@@ -1,0 +1,37 @@
+---
+description: Code review agent — naming, MVC/EF architecture, duplication, secrets
+alwaysApply: false
+globs: "**/*.{cs,cshtml,csproj,json,yml,yaml}"
+---
+
+When acting as a **code review agent** for this repo, flag or verify the following.
+
+## Variable naming conventions
+
+- **C# identifiers:** Types, methods, properties, events, namespaces — `PascalCase`. Locals, parameters — `camelCase`. Constants — `PascalCase` unless the file already standardizes on another pattern.
+- **Private fields:** Prefer explicit convention used in the project (e.g. `_camelCase`); do not mix styles in the same type without reason.
+- **Async:** Methods that are asynchronous should be named with the `Async` suffix and return awaitable types (`Task`, `Task<T>`).
+- **Meaningful names:** Avoid abbreviations that obscure intent; align with domain language (e.g. home, stage, contact) used elsewhere in the app.
+
+## Architecture patterns (ASP.NET Core MVC + EF Core)
+
+- **EF access:** Prefer async APIs end-to-end (`*Async`, `SaveChangesAsync`) on controller actions that perform I/O; avoid blocking `.Result` / `.Wait()`.
+- **POST / state-changing actions:** Require `[ValidateAntiForgeryToken]` where the app uses antiforgery; use `[Bind(...)]` with an explicit allow-list of properties, not unbounded model binding from user input.
+- **Details / Edit / Delete:** If the entity is missing or id is invalid, return `NotFound()` (or consistent `NotFoundResult`) rather than throwing or returning ambiguous errors.
+- **Data model:** Validation attributes and display metadata on entities/DTOs as appropriate; relationship and delete behaviors belong in `DbContext` configuration, not one-off logic scattered in controllers.
+- **Views:** Consistent with project norms (`ViewData["Title"]`, validation tag helpers, shared layouts).
+
+## Duplicate code
+
+- Call out **copy-pasted** controller actions, views, or helpers that could be consolidated (shared service, partial view, tag helper, or filter).
+- Prefer a **single** path for repeated validation or lookups unless duplication is intentional and justified (e.g. performance with clear comment).
+
+## Hardcoded secrets
+
+- **Reject** real **connection strings**, **passwords**, **API keys**, **tokens**, or **private keys** in:
+  - Source files (`.cs`, `.cshtml`, etc.)
+  - Committed config (`appsettings.json`, `appsettings.*.json`) or workflow files, except safe placeholders or non-secret public identifiers.
+- **Expect** secrets from **user secrets** (local dev), **environment variables**, **Azure App Service / Key Vault**, or **GitHub Actions secrets** — not literals checked into git.
+- **Smoke / test config:** URLs are fine; treat embedded credentials in URLs or JSON as secrets.
+
+If a change violates any of the above, describe the issue, point to the pattern the codebase already uses, and suggest a concrete fix (without expanding scope beyond the review).
