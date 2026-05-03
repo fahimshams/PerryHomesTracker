@@ -12,6 +12,10 @@
     <Content Remove="Tests/**" />
     <EmbeddedResource Remove="Tests/**" />
     <None Remove="Tests/**" />
+    <Compile Remove="Tools/**" />
+    <Content Remove="Tools/**" />
+    <EmbeddedResource Remove="Tools/**" />
+    <None Remove="Tools/**" />
   </ItemGroup>
 
   <ItemGroup>
