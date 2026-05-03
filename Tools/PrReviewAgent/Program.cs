@@ -94,6 +94,13 @@ internal static class Program
             return 1;
         }
 
+        var blockMerge = RequiresBlockMerge(reviewText);
+        if (blockMerge)
+        {
+            await Console.Error.WriteLineAsync(
+                "::error::BLOCK_MERGE: true — review reported hardcoded secrets or a critical security vulnerability. Fix before merging.");
+        }
+
         var body = new StringBuilder()
             .AppendLine("## Automated review (Claude Sonnet)")
             .AppendLine()
@@ -106,7 +113,7 @@ internal static class Program
         if (options.DryRun)
         {
             Console.WriteLine(body);
-            return 0;
+            return blockMerge ? 1 : 0;
         }
 
         if (options.GitHubToken is null or "" || options.Repository is null || options.PrNumber is null)
@@ -130,7 +137,7 @@ internal static class Program
             return 1;
         }
 
-        return 0;
+        return blockMerge ? 1 : 0;
     }
 
     private sealed record Options(
@@ -219,6 +226,31 @@ internal static class Program
     }
 
     private sealed record CreateCommentBody([property: JsonPropertyName("body")] string Body);
+
+    /// <summary>Parses Claude's review for <c>BLOCK_MERGE: true</c> (case-insensitive). Any matching line fails CI.</summary>
+    private static bool RequiresBlockMerge(string reviewText)
+    {
+        foreach (var line in reviewText.ReplaceLineEndings("\n").Split('\n'))
+        {
+            var trimmed = line.Trim();
+            if (!trimmed.StartsWith("BLOCK_MERGE", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            var colon = trimmed.IndexOf(':');
+            if (colon < 0)
+                continue;
+
+            var key = trimmed[..colon].Trim();
+            if (!key.Equals("BLOCK_MERGE", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            var value = trimmed[(colon + 1)..].Trim();
+            if (value.Equals("true", StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
+    }
 
     private static class Anthropic
     {
