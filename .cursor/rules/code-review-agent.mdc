@@ -35,3 +35,13 @@ When acting as a **code review agent** for this repo, flag or verify the followi
 - **Smoke / test config:** URLs are fine; treat embedded credentials in URLs or JSON as secrets.
 
 If a change violates any of the above, describe the issue, point to the pattern the codebase already uses, and suggest a concrete fix (without expanding scope beyond the review).
+
+## Pipeline signal (required)
+
+The last line of your response must be **exactly one** of the following (CI parses this; no extra text on that line):
+
+- `BLOCK_MERGE: true` — use **only** when the diff introduces **hardcoded secrets** (real connection strings, passwords, API keys, tokens, or private keys in source or committed config/workflows) or a **critical security vulnerability** in the changed code (for example, a severe authentication bypass, unsafe deserialization of untrusted data, or obvious remote code execution in new logic). When in doubt between “critical” and “important but not critical,” use `false`.
+
+- `BLOCK_MERGE: false` — for all other findings: naming, architecture, duplication, style, performance nits, or security issues that are not hardcoded secrets and not critical as defined above.
+
+Do not put `BLOCK_MERGE: true` on any line unless that strict bar is met.
