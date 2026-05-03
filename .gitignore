@@ -49,3 +49,5 @@ Thumbs.db
 appsettings.*.local.json
 *.pfx
 secrets.json
+
+.cursor/mcp.json

@@ -1,0 +1,45 @@
+name: PR — Claude code review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: pr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  DOTNET_VERSION: "8.0.x"
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Fetch PR diff
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr diff "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" > "${{ github.workspace }}/pr.diff"
+
+      - name: Run PR review agent (Claude + rules from .cursor/rules)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DIFF_FILE: ${{ github.workspace }}/pr.diff
+          REVIEW_RULES_PATH: ${{ github.workspace }}/.cursor/rules/code-review-agent.mdc
+        run: dotnet run --project Tools/PrReviewAgent/PrReviewAgent.csproj --configuration Release --no-launch-profile
+        working-directory: ${{ github.workspace }}
