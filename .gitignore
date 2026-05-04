@@ -41,6 +41,20 @@ Coverage*/
 *.dbmdl
 *.jfm
 
+## Terraform (keep .terraform.lock.hcl committed for provider pins)
+**/.terraform/**
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+*.tfvars
+*.tfvars.json
+
 ## OS
 .DS_Store
 Thumbs.db
